@@ -1,3 +1,5 @@
+import { incrementNeighbors } from "./CellsManipulator";
+
 export type Cell = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type Field = Cell[][];
 export type Coords = [number, number];
@@ -25,15 +27,16 @@ export const fieldGenerator = (size: number, probability: number): Field => {
   const result: Field = emptyFieldGenerator(size);
 
   // Go through every row and every column
-  for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size; j++) {
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
       // if there are no bombs just return
       if (totalCellsWithBomb === 0) {
         return result;
       }
       if (totalCellsWithBomb / unprocessedCells > Math.random()) {
         // place bomb in cell
-        result[i][j] = CellState.bomb;
+        result[y][x] = CellState.bomb;
+        incrementNeighbors([y, x], result);
         // decrease total number of bombs to place
         totalCellsWithBomb--;
       }

@@ -1,5 +1,7 @@
-import { CellState, emptyFieldGenerator, fieldGenerator } from "./Field";
+import { Cell, CellState, emptyFieldGenerator, fieldGenerator } from "./Field";
 const { empty, bomb, hidden } = CellState;
+
+const cellWithBombFilter = (cell: Cell) => cell === bomb;
 
 describe("Field Generator", () => {
   describe("emptyFieldGenerator tests", () => {
@@ -65,10 +67,25 @@ describe("Field Generator", () => {
       console.table(flatField);
 
       const cellsWithBombs = flatField.filter((cell) => cell === bomb);
-      const emptyCells = flatField.filter((cell) => cell === empty);
+      const emptyCells = flatField.filter((cell) => cell === 2);
 
       expect(cellsWithBombs).toHaveLength(2);
       expect(emptyCells).toHaveLength(2);
+    });
+    it("Real game field size = 10x10 with 1/4 mined cells (25 mines)", () => {
+      const size = 10;
+      const mines = 25;
+
+      const probability = mines / (size * size);
+      const field = fieldGenerator(size, probability);
+
+      const flatField = field.flat();
+
+      expect([...field[0], ...field[1]].join("")).not.toBe(
+        "99999999999999999999"
+      );
+
+      expect(flatField.filter(cellWithBombFilter)).toHaveLength(mines);
     });
   });
 });
