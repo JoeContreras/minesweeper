@@ -9,7 +9,9 @@
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch --mode=development",
     "serve": "webpack serve --mode=development",
-    "test": "jest"
+    "test": "jest",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "keywords": [
     "react",
@@ -23,6 +25,14 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-interactions": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/builder-webpack5": "^6.4.19",
+    "@storybook/manager-webpack5": "^6.4.19",
+    "@storybook/react": "^6.4.19",
+    "@storybook/testing-library": "^0.0.9",
     "@types/jest": "^27.4.1",
     "@types/react": "^17.0.41",
     "@types/react-dom": "^17.0.14",
@@ -47,6 +57,8 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }
