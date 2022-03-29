@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Legend } from "../src/components/Legend/Legend";
+import { Legend } from "../src/components/Top/Legend";
 
 const App = () => {
   return (
