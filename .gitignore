@@ -5,3 +5,4 @@
 /dist
 /coverage/
 /build-storybook.log
+/yarn.lock
