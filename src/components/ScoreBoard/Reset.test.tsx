@@ -7,7 +7,7 @@ describe("Reset button check", () => {
   it("should render elements with default state", () => {
     render(<ResetWithDummyHandlerOnReset />);
     const resetButton = screen.getByText("🙂");
-    expect(resetButton).toBeInTheDOM();
+    expect(resetButton).toBeInTheDocument();
   });
   it("onReset handler should be called", () => {
     const onReset = jest.fn();
@@ -23,7 +23,7 @@ describe("Reset button check", () => {
     fireEvent.mouseDown(resetButton);
 
     const resetButton2 = screen.getByText("😮");
-    expect(resetButton2).toBeInTheDOM();
+    expect(resetButton2).toBeInTheDocument();
 
     fireEvent.mouseUp(resetButton2);
   });
@@ -33,7 +33,7 @@ describe("Reset button check", () => {
     fireEvent.mouseDown(resetButton);
 
     const resetButton2 = screen.getByText("😮");
-    expect(resetButton2).toBeInTheDOM();
+    expect(resetButton2).toBeInTheDocument();
 
     fireEvent.mouseLeave(resetButton2);
   });
