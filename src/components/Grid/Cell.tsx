@@ -2,6 +2,7 @@ import { FC } from "react";
 import styled from "@emotion/styled";
 import React from "react";
 import { Cell as CellType, CellState, Coords } from "@/helpers/Field";
+import { useMouseDown } from "@/hooks/useMouseDown";
 
 export interface CellProps {
   /**
@@ -23,9 +24,11 @@ export interface CellProps {
 }
 
 export const isActiveCell = (cell: CellType): boolean =>
-  [CellState.hiddeen, CellState.flag, CellState.weakFlag].includes(cell);
+  [CellState.hidden, CellState.flag, CellState.weakFlag].includes(cell);
 
 export const Cell: FC<CellProps> = ({ children, coords, ...rest }) => {
+  const [mouseDown, setMouseDown, setMouseUp] = useMouseDown();
+
   const onClick = () => {
     if (isActiveCell(children)) {
       rest.onClick(coords);
@@ -43,9 +46,25 @@ export const Cell: FC<CellProps> = ({ children, coords, ...rest }) => {
     }
   };
 
+  const onMouseDown = () => {
+    if (isActiveCell(children)) {
+      setMouseDown();
+    }
+  };
+
+  const onMouseUp = () => {
+    if (isActiveCell(children)) {
+      setMouseUp();
+    }
+  };
+
   const props = {
     onClick,
     onContextMenu,
+    onMouseDown,
+    onMouseUp,
+    onMouseLeave: onMouseUp,
+    mouseDown,
     "data-testid": `${children}_${coords}`,
   };
 
@@ -56,6 +75,10 @@ interface ComponentsMapProps {
   children: CellType;
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
   onContextMenu: (event: React.MouseEvent<HTMLElement>) => void;
+  onMouseDown: () => void;
+  onMouseUp: () => void;
+  onMouseLeave: () => void;
+  mouseDown: boolean;
   "data-testid"?: string;
 }
 
@@ -88,7 +111,11 @@ const ComponentsMap: FC<ComponentsMapProps> = ({ children, ...rest }) => {
   }
 };
 
-const ClosedFrame = styled.div`
+interface closedFrameProps {
+  mouseDown: boolean;
+}
+
+const ClosedFrame = styled.div<closedFrameProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,7 +125,8 @@ const ClosedFrame = styled.div`
   height: 1.8vw;
   background-color: #d1d1d1;
   border: 0.6vh solid transparent;
-  border-color: white #9e9e9e #9e9e9e white;
+  border-color: ${({ mouseDown = false }) =>
+    mouseDown ? "transparent" : "white #9e9e9e #9e9e9e white"};
   &:hover {
     filter: brightness(1.1);
   }
@@ -140,8 +168,8 @@ const BombFrame = styled(RevealedFrame)`
 `;
 
 const Flag = styled.div`
-  width: 0px;
-  height: 0px;
+  width: 0;
+  height: 0;
   border-top: 0.5vw solid transparent;
   border-bottom: 0.5vw solid transparent;
   border-left: 0.5vw solid #ec433c;

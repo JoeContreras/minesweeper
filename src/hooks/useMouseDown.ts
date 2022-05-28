@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useDebugValue, useState } from "react";
 
 export type SetMouseDownStatus = () => void;
 export type SetMouseUpStatus = () => void;
@@ -9,6 +9,13 @@ export const useMouseDown = (): [
   SetMouseUpStatus
 ] => {
   const [mouseDown, setMouseDown] = useState(false);
+
+  //should always ne stringified
+  // useDebugValue(`mouseDown: ${mouseDown}`);
+  useDebugValue(
+    `mouseDown: ${mouseDown}`,
+    (str) => `${str} ${new Date().toISOString()}`
+  );
 
   const onMouseDown = () => setMouseDown(true);
   const onMouseUp = () => setMouseDown(false);
